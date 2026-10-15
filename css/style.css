@@ -156,6 +156,38 @@ main { padding: 40px var(--gutter) 80px; }
 .pagination button[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
 .pagination button:disabled { opacity: .3; cursor: default; }
 
+/* ---------- 시즌 ---------- */
+.season-intro {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+  padding-block: 28px 44px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--line);
+}
+.season-eyebrow { margin: 0; font-family: var(--font-display); font-size: 11px; letter-spacing: 0.24em; color: var(--muted); }
+.season-title { margin: 0; font-family: var(--font-logo); font-style: italic; font-weight: 500; font-size: clamp(34px, 6vw, 60px); line-height: 1.1; text-wrap: balance; }
+.season-desc { margin: 0; max-width: 46ch; color: #4a4a46; }
+.season-desc span { color: var(--ink); margin-right: 6px; }
+.season-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+.season-tabs a {
+  border: 1px solid var(--line);
+  padding: 8px 16px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.season-tabs a span { font-family: var(--font-body); letter-spacing: 0; color: var(--muted); margin-left: 4px; }
+.season-tabs a:hover { text-decoration: none; border-color: var(--muted); }
+.season-tabs a[aria-current="page"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.season-tabs a[aria-current="page"] span { color: var(--bg); opacity: .7; }
+
+.tags { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.tags .badge.static { margin-bottom: 0; }
+.season-tag { border: 1px solid var(--line); padding: 1px 7px; }
+.season-tag:hover { text-decoration: none; border-color: var(--ink); }
+
 /* ---------- 상세 ---------- */
 .crumbs { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 20px; }
 .detail-grid {

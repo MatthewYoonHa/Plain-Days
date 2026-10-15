@@ -92,7 +92,7 @@ function renderChrome(activeCat) {
       </nav>
     </div>
     <nav class="cat-nav" aria-label="카테고리">
-      ${CATEGORIES.map((c) => `<a href="index.html#${c.id}" data-cat="${c.id}" ${c.id === activeCat ? 'aria-current="page"' : ""}>${c.label}</a>`).join("")}
+      ${CATEGORIES.map((c) => `<a href="index.html#${c.id === "season" ? SEASONS[0].id : c.id}" data-cat="${c.id}" ${c.id === activeCat ? 'aria-current="page"' : ""}>${c.label}</a>`).join("")}
       <span class="cat-sep" aria-hidden="true"></span>
       <a href="#">Review</a><a href="#">Q&amp;A</a>
     </nav>`;
@@ -241,6 +241,21 @@ function productCard(p) {
     </li>`;
 }
 
+/* ---------- 시즌 소개 영역 ---------- */
+function renderSeasonIntro(season) {
+  const box = $("#season-intro");
+  if (!box) return;
+  box.hidden = !season;
+  if (!season) return;
+  box.innerHTML = `
+    <p class="season-eyebrow">SEASONAL COLLECTION</p>
+    <h2 class="season-title">${season.title}</h2>
+    <p class="season-desc"><span>${season.ko}</span> ${season.desc}</p>
+    <nav class="season-tabs" aria-label="시즌">
+      ${SEASONS.map((s) => `<a href="index.html#${s.id}" ${s.id === season.id ? 'aria-current="page"' : ""}>${s.label} <span>${s.ko}</span></a>`).join("")}
+    </nav>`;
+}
+
 /* ---------- 목록 페이지 ---------- */
 function initListPage() {
   const state = { cat: "all", page: 1, sort: "new" };
@@ -248,7 +263,9 @@ function initListPage() {
   function readHash() {
     // 주소 예: index.html#outer-p2  (카테고리 outer, 2페이지)
     const m = location.hash.slice(1).match(/^([a-z]+)(?:-p(\d+))?$/);
-    state.cat = m && CATEGORIES.some((c) => c.id === m[1]) ? m[1] : "all";
+    const valid = (id) => CATEGORIES.some((c) => c.id === id) || SEASONS.some((s) => s.id === id);
+    state.cat = m && valid(m[1]) ? m[1] : "all";
+    if (state.cat === "season") state.cat = SEASONS[0].id;
     state.page = m && m[2] ? +m[2] : 1;
   }
 
@@ -260,7 +277,9 @@ function initListPage() {
 
   function render() {
     let list = PRODUCTS.slice();
+    const season = SEASONS.find((s) => s.id === state.cat);
     if (state.cat === "new") list = list.filter((p) => p.isNew);
+    else if (season) list = list.filter((p) => p.season === season.id);
     else if (state.cat !== "all") list = list.filter((p) => p.cat === state.cat);
 
     if (state.sort === "new") list.sort((a, b) => b.id - a.id);
@@ -271,9 +290,10 @@ function initListPage() {
     const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
     state.page = Math.min(Math.max(1, state.page), pages);
     const shown = list.slice((state.page - 1) * PER_PAGE, state.page * PER_PAGE);
-    const catLabel = CATEGORIES.find((c) => c.id === state.cat).label;
+    const catLabel = season ? season.label : CATEGORIES.find((c) => c.id === state.cat).label;
 
     $("#list-title").textContent = catLabel;
+    renderSeasonIntro(season);
     $("#list-count").textContent = `${list.length}개의 상품`;
     $("#grid").innerHTML = shown.map(productCard).join("");
 
@@ -288,7 +308,7 @@ function initListPage() {
     }
 
     document.querySelectorAll(".cat-nav [data-cat]").forEach((a) => {
-      if (a.dataset.cat === state.cat) a.setAttribute("aria-current", "page");
+      if (a.dataset.cat === state.cat || (season && a.dataset.cat === "season")) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
     document.title = `${catLabel} | ${BRAND}`;
@@ -337,7 +357,10 @@ function initDetailPage() {
         <div class="thumbs" id="thumbs"></div>
       </div>
       <div class="info">
-        ${p.isNew ? `<span class="badge static">NEW</span>` : ""}
+        <div class="tags">
+          ${p.isNew ? `<span class="badge static">NEW</span>` : ""}
+          ${p.season ? `<a class="badge static season-tag" href="index.html#${p.season}">${SEASONS.find((s) => s.id === p.season).label}</a>` : ""}
+        </div>
         <h1>${p.name}</h1>
         <p class="detail-price">
           ${sale ? `<s class="muted">${won(p.listPrice)}</s> <span class="off">${Math.round((1 - p.price / p.listPrice) * 100)}%</span>` : ""}
