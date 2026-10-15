@@ -15,12 +15,13 @@ const CATEGORIES = [
   { id: "acc", label: "Acc" },
 ];
 
-// 시즌. 맨 위가 현재 시즌이고, Seasonal 메뉴를 누르면 먼저 보입니다.
+// 시즌. Seasonal 메뉴에는 오늘 날짜에 맞는 시즌 하나만 보입니다.
+// 9월-2월은 가을·겨울(FW), 3월-8월은 봄·여름(SS)이고, 달이 바뀌면 자동으로 넘어갑니다.
 // 상품에 season: "fw" 처럼 적으면 그 시즌에 들어갑니다. (시즌이 없는 상품은 안 적으면 됩니다)
-const SEASONS = [
-  { id: "fw", label: "26 FW", title: "Autumn / Winter 2026", ko: "가을 · 겨울", desc: "찬 바람이 불기 시작하는 계절을 위한 울 코트, 니트, 레이어드 아이템." },
-  { id: "ss", label: "26 SS", title: "Spring / Summer 2026", ko: "봄 · 여름", desc: "가볍게 걸치기 좋은 코튼과 린넨, 매일 입는 티셔츠와 셔츠." },
-];
+const SEASONS = {
+  fw: { name: "Autumn / Winter", ko: "가을 · 겨울", months: [9, 10, 11, 12, 1, 2], desc: "찬 바람이 불기 시작하는 계절을 위한 울 코트, 니트, 레이어드 아이템." },
+  ss: { name: "Spring / Summer", ko: "봄 · 여름", months: [3, 4, 5, 6, 7, 8], desc: "가볍게 걸치기 좋은 코튼과 린넨, 매일 입는 티셔츠와 셔츠." },
+};
 
 // 색상 이름 → 화면에 표시할 색
 const COLORS = {

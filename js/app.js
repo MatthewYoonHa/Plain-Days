@@ -92,7 +92,7 @@ function renderChrome(activeCat) {
       </nav>
     </div>
     <nav class="cat-nav" aria-label="카테고리">
-      ${CATEGORIES.map((c) => `<a href="index.html#${c.id === "season" ? SEASONS[0].id : c.id}" data-cat="${c.id}" ${c.id === activeCat ? 'aria-current="page"' : ""}>${c.label}</a>`).join("")}
+      ${CATEGORIES.map((c) => `<a href="index.html#${c.id}" data-cat="${c.id}" ${c.id === activeCat ? 'aria-current="page"' : ""}>${c.label}</a>`).join("")}
       <span class="cat-sep" aria-hidden="true"></span>
       <a href="#">Review</a><a href="#">Q&amp;A</a>
     </nav>`;
@@ -241,6 +241,16 @@ function productCard(p) {
     </li>`;
 }
 
+/* ---------- 현재 시즌 ----------
+   오늘 날짜로 지금 시즌을 고릅니다. 1-2월은 전년도 FW에 속합니다. (예: 2027년 1월 → 26 FW) */
+function currentSeason(date = new Date()) {
+  const month = date.getMonth() + 1;
+  const id = SEASONS.fw.months.includes(month) ? "fw" : "ss";
+  const year = id === "fw" && month <= 2 ? date.getFullYear() - 1 : date.getFullYear();
+  const s = SEASONS[id];
+  return { ...s, id, label: `${String(year).slice(2)} ${id.toUpperCase()}`, title: `${s.name} ${year}` };
+}
+
 /* ---------- 시즌 소개 영역 ---------- */
 function renderSeasonIntro(season) {
   const box = $("#season-intro");
@@ -250,10 +260,7 @@ function renderSeasonIntro(season) {
   box.innerHTML = `
     <p class="season-eyebrow">SEASONAL COLLECTION</p>
     <h2 class="season-title">${season.title}</h2>
-    <p class="season-desc"><span>${season.ko}</span> ${season.desc}</p>
-    <nav class="season-tabs" aria-label="시즌">
-      ${SEASONS.map((s) => `<a href="index.html#${s.id}" ${s.id === season.id ? 'aria-current="page"' : ""}>${s.label} <span>${s.ko}</span></a>`).join("")}
-    </nav>`;
+    <p class="season-desc"><span>${season.ko}</span> ${season.desc}</p>`;
 }
 
 /* ---------- 목록 페이지 ---------- */
@@ -263,9 +270,7 @@ function initListPage() {
   function readHash() {
     // 주소 예: index.html#outer-p2  (카테고리 outer, 2페이지)
     const m = location.hash.slice(1).match(/^([a-z]+)(?:-p(\d+))?$/);
-    const valid = (id) => CATEGORIES.some((c) => c.id === id) || SEASONS.some((s) => s.id === id);
-    state.cat = m && valid(m[1]) ? m[1] : "all";
-    if (state.cat === "season") state.cat = SEASONS[0].id;
+    state.cat = m && CATEGORIES.some((c) => c.id === m[1]) ? m[1] : "all";
     state.page = m && m[2] ? +m[2] : 1;
   }
 
@@ -277,7 +282,7 @@ function initListPage() {
 
   function render() {
     let list = PRODUCTS.slice();
-    const season = SEASONS.find((s) => s.id === state.cat);
+    const season = state.cat === "season" ? currentSeason() : null;
     if (state.cat === "new") list = list.filter((p) => p.isNew);
     else if (season) list = list.filter((p) => p.season === season.id);
     else if (state.cat !== "all") list = list.filter((p) => p.cat === state.cat);
@@ -308,7 +313,7 @@ function initListPage() {
     }
 
     document.querySelectorAll(".cat-nav [data-cat]").forEach((a) => {
-      if (a.dataset.cat === state.cat || (season && a.dataset.cat === "season")) a.setAttribute("aria-current", "page");
+      if (a.dataset.cat === state.cat) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
     document.title = `${catLabel} | ${BRAND}`;
@@ -359,7 +364,7 @@ function initDetailPage() {
       <div class="info">
         <div class="tags">
           ${p.isNew ? `<span class="badge static">NEW</span>` : ""}
-          ${p.season ? `<a class="badge static season-tag" href="index.html#${p.season}">${SEASONS.find((s) => s.id === p.season).label}</a>` : ""}
+          ${p.season === currentSeason().id ? `<a class="badge static season-tag" href="index.html#season">${currentSeason().label}</a>` : ""}
         </div>
         <h1>${p.name}</h1>
         <p class="detail-price">
