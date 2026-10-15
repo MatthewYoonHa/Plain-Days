@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PLAIN DAYS</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=IBM+Plex+Sans+KR:wght@400;500&family=Jost:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <div class="list-head">
+      <div>
+        <h1 id="list-title">All</h1>
+        <p class="muted" id="list-count"></p>
+      </div>
+      <label class="sort" for="sort">
+        정렬
+        <select id="sort">
+          <option value="new">신상품순</option>
+          <option value="low">낮은 가격순</option>
+          <option value="high">높은 가격순</option>
+          <option value="name">상품명순</option>
+        </select>
+      </label>
+    </div>
+    <ul class="grid" id="grid"></ul>
+    <nav class="pagination" id="pagination" aria-label="페이지"></nav>
+  </main>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+  <script>initListPage();</script>
+</body>
+</html>
