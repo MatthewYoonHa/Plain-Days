@@ -1,4 +1,5 @@
 // 상품 데이터. 실제 사진이 생기면 각 상품에 images: ["images/xxx-1.jpg", "images/xxx-2.jpg"] 를 넣으면 됩니다.
+// 색상마다 사진이 다르면 images: { "블랙": [...], "네이비": [...] } 처럼 색상 이름별로 넣습니다.
 // price: 판매가, listPrice: 소비자가(할인 전 가격, 없으면 할인 표시 안 함)
 
 const CATEGORIES = [
@@ -74,6 +75,12 @@ const PRODUCTS = [
   { id: 30, name: "레더 벨트",               cat: "acc",    price: 35000,                     colors: ["블랙", "브라운"],                         fabric: "소가죽, 황동 버클" },
   { id: 31, name: "퀼팅 라이너 베스트",        cat: "outer", season: "fw",  price: 69000,                     colors: ["올리브", "블랙"],                         fabric: "나일론 100%, 충전재 폴리에스터" },
   { id: 32, name: "보트넥 스트라이프 티셔츠",   cat: "top", season: "ss",    price: 34000,                     colors: ["네이비", "아이보리"],                     fabric: "코튼 100%" },
+  { id: 33, name: "플란넬 체크 셔츠",          cat: "shirt", season: "fw",  price: 43400,  listPrice: 62000,  colors: ["블랙", "네이비", "버건디"], isNew: true,  fabric: "코튼 100% 기모 플란넬",
+    images: { "블랙": ["images/products/flannel-check-shirt-black-1.jpg", "images/products/flannel-check-shirt-black-2.jpg"], "네이비": ["images/products/flannel-check-shirt-navy-1.jpg", "images/products/flannel-check-shirt-navy-2.jpg"], "버건디": ["images/products/flannel-check-shirt-burgundy-1.jpg", "images/products/flannel-check-shirt-burgundy-2.jpg"] } },
+  { id: 34, name: "핸드메이드 울 발마칸 코트",  cat: "outer", season: "fw",  price: 229000, listPrice: 269000, colors: ["베이지", "차콜"],           isNew: true,  fabric: "울 90%, 캐시미어 10%",
+    images: { "베이지": ["images/products/wool-balmacaan-coat-beige-1.jpg", "images/products/wool-balmacaan-coat-beige-2.jpg"], "차콜": ["images/products/wool-balmacaan-coat-charcoal-1.jpg", "images/products/wool-balmacaan-coat-charcoal-2.jpg"] } },
+  { id: 35, name: "울 셔츠 블루종",            cat: "outer", season: "fw",  price: 119000,                    colors: ["블랙", "브라운"],           isNew: true,  fabric: "울 70%, 폴리에스터 30%",
+    images: { "블랙": ["images/products/wool-shirt-blouson-black-1.jpg", "images/products/wool-shirt-blouson-black-2.jpg"], "브라운": ["images/products/wool-shirt-blouson-brown-1.jpg", "images/products/wool-shirt-blouson-brown-2.jpg"] } },
 ];
 
 const SIZES = {

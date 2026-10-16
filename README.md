@@ -13,7 +13,7 @@
 
 ## 실제 사진 넣기
 
-`images/` 폴더에 사진을 올리고, `js/products.js`의 상품에 `images: ["images/coat-1.jpg", "images/coat-2.jpg"]`처럼 넣으면 그림 대신 사진이 나옵니다.
+`images/` 폴더에 사진을 올리고, `js/products.js`의 상품에 `images: ["images/coat-1.jpg", "images/coat-2.jpg"]`처럼 넣으면 그림 대신 사진이 나옵니다. 색상마다 사진이 다르면 `images: { "블랙": [...], "네이비": [...] }`처럼 색상 이름별로 넣으면 색상을 고를 때 사진도 바뀝니다.
 
 ## 참고
 

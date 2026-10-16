@@ -41,7 +41,8 @@ function placeholder(p, colorName, alt = false) {
 }
 
 function productImages(p, colorName) {
-  if (p.images && p.images.length) return p.images;
+  if (Array.isArray(p.images) && p.images.length) return p.images;
+  if (p.images) return p.images[colorName] || p.images[p.colors[0]];
   return [placeholder(p, colorName), placeholder(p, colorName, true)];
 }
 
